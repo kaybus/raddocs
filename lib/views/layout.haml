@@ -17,7 +17,6 @@
         font-weight: normal;
         color: #F08080;
       }
-
       p {
         padding: 15px;
         font-size: 130%;
@@ -26,6 +25,6 @@
     .container
       .row-fluid
         .span4.sidebar
-          = haml :nav, locals: { index: index, api_name: api_name }
-        .span8.main
+          / = haml :nav, locals: { index: index, api_name: api_name }
+        .span12.main
           = yield
