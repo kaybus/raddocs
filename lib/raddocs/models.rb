@@ -52,13 +52,28 @@ module Raddocs
       @description = @attrs.fetch("description")
       @explanation = @attrs.fetch("explanation", nil)
       @parameters = Parameters.new(@attrs.fetch("parameters"))
-      @response_fields = ResponseFields.new(@attrs.fetch("response_fields"))
+      @response_fields = ResponseFields.new(@attrs.fetch("response_fields", []))
       @requests = @attrs.fetch("requests").map { |request| Request.new(request) }
     end
 
     # @return [Boolean] true if explanation is present
     def explanation?
       !explanation.nil?
+    end
+  end
+
+  # Guide page model
+  class Guide
+    attr_reader :title
+
+    def initialize(attributes)
+      @title = attributes.fetch("title")
+      @file = attributes.fetch("file")
+    end
+
+    def href
+      filename = @file.gsub(".md", "")
+      "guides/#{filename}"
     end
   end
 
@@ -258,6 +273,11 @@ module Raddocs
       !@request_body.nil?
     end
 
+    # @return [Boolean] true if request headers are present
+    def request_headers?
+      request_headers.length > 0
+    end
+
     # Request headers must be set
     # @return [String] Content type of the request
     def request_content_type
@@ -284,6 +304,11 @@ module Raddocs
     # @return [Boolean] true if response body is present
     def response_body?
       !@response_body.nil?
+    end
+
+    # @return [Boolean] true if response headers are present
+    def response_headers?
+      response_headers.length > 0
     end
 
     # Response headers must be set
